@@ -1,0 +1,231 @@
+import { useState } from "react";
+import { Zap, HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { toast } from "sonner";
+
+const LeadForm = () => {
+  const [formData, setFormData] = useState({
+    boligtype: "",
+    personer: "",
+    forbrug: "",
+    nuvarendeSelskab: "",
+    adresse: "",
+    navn: "",
+    email: "",
+    telefon: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.boligtype || !formData.personer || !formData.forbrug || !formData.adresse || !formData.navn || !formData.email || !formData.telefon) {
+      toast.error("Udfyld venligst alle påkrævede felter");
+      return;
+    }
+
+    toast.success("Tak for din henvendelse! Du vil snart blive kontaktet med tilbud.");
+    console.log("Form submitted:", formData);
+  };
+
+  const updateField = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <section id="lead-form" className="py-16 md:py-24 px-4 gradient-hero">
+      <div className="container max-w-2xl">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Beregn dit elforbrug
+          </h2>
+          <p className="text-muted-foreground">
+            Udfyld formularen og modtag personlige tilbud
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="bg-card rounded-2xl shadow-card p-8 md:p-10 border border-border/50"
+        >
+          <div className="space-y-6">
+            {/* Boligtype */}
+            <div className="space-y-2">
+              <Label htmlFor="boligtype" className="text-foreground font-medium">
+                Boligtype *
+              </Label>
+              <Select
+                value={formData.boligtype}
+                onValueChange={(value) => updateField("boligtype", value)}
+              >
+                <SelectTrigger className="h-12 rounded-xl">
+                  <SelectValue placeholder="Vælg boligtype" />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="hus">Hus</SelectItem>
+                  <SelectItem value="lejlighed">Lejlighed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Antal personer */}
+            <div className="space-y-2">
+              <Label htmlFor="personer" className="text-foreground font-medium">
+                Antal personer i husstanden *
+              </Label>
+              <Input
+                id="personer"
+                type="number"
+                min="1"
+                max="10"
+                placeholder="F.eks. 2"
+                value={formData.personer}
+                onChange={(e) => updateField("personer", e.target.value)}
+                className="h-12 rounded-xl"
+              />
+            </div>
+
+            {/* Estimeret forbrug */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="forbrug" className="text-foreground font-medium">
+                  Estimeret forbrug (kWh/år) *
+                </Label>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs bg-card text-foreground border-border">
+                    <p>Gennemsnit: Lejlighed ca. 2.000 kWh, Hus ca. 4.000 kWh</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <Input
+                id="forbrug"
+                type="number"
+                placeholder="F.eks. 4000"
+                value={formData.forbrug}
+                onChange={(e) => updateField("forbrug", e.target.value)}
+                className="h-12 rounded-xl"
+              />
+              <p className="text-sm text-muted-foreground">
+                Gennemsnit: Lejlighed 2.000 kWh, Hus 4.000 kWh
+              </p>
+            </div>
+
+            {/* Nuværende elselskab */}
+            <div className="space-y-2">
+              <Label htmlFor="nuvarendeSelskab" className="text-foreground font-medium">
+                Nuværende elselskab (valgfrit)
+              </Label>
+              <Input
+                id="nuvarendeSelskab"
+                type="text"
+                placeholder="F.eks. Ørsted, EWII, Norlys..."
+                value={formData.nuvarendeSelskab}
+                onChange={(e) => updateField("nuvarendeSelskab", e.target.value)}
+                className="h-12 rounded-xl"
+              />
+            </div>
+
+            {/* Adresse */}
+            <div className="space-y-2">
+              <Label htmlFor="adresse" className="text-foreground font-medium">
+                Adresse *
+              </Label>
+              <Input
+                id="adresse"
+                type="text"
+                placeholder="Vejnavn og husnummer, postnummer, by"
+                value={formData.adresse}
+                onChange={(e) => updateField("adresse", e.target.value)}
+                className="h-12 rounded-xl"
+              />
+            </div>
+
+            {/* Kontaktoplysninger sektion */}
+            <div className="pt-6 border-t border-border">
+              <h3 className="text-lg font-semibold text-foreground mb-4">
+                Kontaktoplysninger
+              </h3>
+
+              <div className="space-y-4">
+                {/* Fulde navn */}
+                <div className="space-y-2">
+                  <Label htmlFor="navn" className="text-foreground font-medium">
+                    Fulde navn *
+                  </Label>
+                  <Input
+                    id="navn"
+                    type="text"
+                    placeholder="Dit fulde navn"
+                    value={formData.navn}
+                    onChange={(e) => updateField("navn", e.target.value)}
+                    className="h-12 rounded-xl"
+                  />
+                </div>
+
+                {/* E-mail */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-foreground font-medium">
+                    E-mail *
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="din@email.dk"
+                    value={formData.email}
+                    onChange={(e) => updateField("email", e.target.value)}
+                    className="h-12 rounded-xl"
+                  />
+                </div>
+
+                {/* Telefonnummer */}
+                <div className="space-y-2">
+                  <Label htmlFor="telefon" className="text-foreground font-medium">
+                    Telefonnummer *
+                  </Label>
+                  <Input
+                    id="telefon"
+                    type="tel"
+                    placeholder="12 34 56 78"
+                    value={formData.telefon}
+                    onChange={(e) => updateField("telefon", e.target.value)}
+                    className="h-12 rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Submit button */}
+            <Button variant="hero" size="xl" type="submit" className="w-full mt-6">
+              <Zap className="w-5 h-5" />
+              Sammenlign nu
+            </Button>
+
+            {/* Disclaimer */}
+            <p className="text-xs text-muted-foreground text-center leading-relaxed">
+              Ved at klikke på 'Sammenlign nu' accepterer du, at udvalgte elselskaber kontakter dig med tilbud.
+            </p>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
+};
+
+export default LeadForm;
