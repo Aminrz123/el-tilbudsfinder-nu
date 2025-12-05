@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Zap, HelpCircle } from "lucide-react";
+import { Zap, HelpCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,11 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 
+// ⚠️ ERSTAT DENNE URL MED DIN N8N WEBHOOK URL
+const N8N_WEBHOOK_URL = "YOUR_N8N_WEBHOOK_URL";
+
 const LeadForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     boligtype: "",
     personer: "",
@@ -29,7 +33,7 @@ const LeadForm = () => {
     telefon: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -38,8 +42,41 @@ const LeadForm = () => {
       return;
     }
 
-    toast.success("Tak for din henvendelse! Du vil snart blive kontaktet med tilbud.");
-    console.log("Form submitted:", formData);
+    setIsLoading(true);
+
+    try {
+      await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: JSON.stringify({
+          ...formData,
+          timestamp: new Date().toISOString(),
+          source: "Net-Partner.dk",
+        }),
+      });
+
+      toast.success("Tak for din henvendelse! Du vil snart blive kontaktet med tilbud.");
+      
+      // Reset form
+      setFormData({
+        boligtype: "",
+        personer: "",
+        forbrug: "",
+        nuvarendeSelskab: "",
+        adresse: "",
+        navn: "",
+        email: "",
+        telefon: "",
+      });
+    } catch (error) {
+      console.error("Error sending to n8n:", error);
+      toast.error("Der opstod en fejl. Prøv venligst igen.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const updateField = (field: string, value: string) => {
@@ -212,9 +249,13 @@ const LeadForm = () => {
             </div>
 
             {/* Submit button */}
-            <Button variant="hero" size="xl" type="submit" className="w-full mt-6">
-              <Zap className="w-5 h-5" />
-              Sammenlign nu
+            <Button variant="hero" size="xl" type="submit" className="w-full mt-6" disabled={isLoading}>
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Zap className="w-5 h-5" />
+              )}
+              {isLoading ? "Sender..." : "Sammenlign nu"}
             </Button>
 
             {/* Disclaimer */}
