@@ -17,8 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 
-// ⚠️ ERSTAT DENNE URL MED DIN N8N WEBHOOK URL
-const N8N_WEBHOOK_URL = "YOUR_N8N_WEBHOOK_URL";
+const N8N_WEBHOOK_URL = "https://netpartner.app.n8n.cloud/webhook/lead-form";
 
 const LeadForm = () => {
   const [isLoading, setIsLoading] = useState(false);
