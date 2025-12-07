@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const CookieConsent = () => {
@@ -27,7 +28,8 @@ const CookieConsent = () => {
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-background border-t border-border shadow-lg animate-in slide-in-from-bottom-4 duration-300">
       <div className="container mx-auto max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground text-center sm:text-left">
-          Vi bruger cookies for at forbedre din oplevelse på vores hjemmeside. Ved at fortsætte accepterer du vores brug af cookies.
+          Vi bruger cookies for at forbedre din oplevelse på vores hjemmeside. Læs mere i vores{" "}
+          <Link to="/cookiepolitik" className="underline hover:text-foreground">cookiepolitik</Link>.
         </p>
         <div className="flex gap-3 shrink-0">
           <Button variant="outline" size="sm" onClick={handleReject}>
