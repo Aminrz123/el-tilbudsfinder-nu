@@ -271,7 +271,7 @@ const LeadForm = () => {
             </Button>
 
             {/* Accept checkbox */}
-            <div className="flex items-start gap-4 mt-4 p-4 rounded-xl bg-muted/50 border border-border/50 cursor-pointer hover:bg-muted/70 transition-colors" onClick={() => setAcceptContact(!acceptContact)}>
+            <div className="flex items-start gap-4 mt-4 p-4 rounded-xl bg-muted/50 border border-border/50">
               <Checkbox
                 id="acceptContact"
                 checked={acceptContact}
