@@ -24,6 +24,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import AddressAutocomplete from "@/components/AddressAutocomplete";
 
 const N8N_WEBHOOK_URL = "https://netpartner.app.n8n.cloud/webhook/60e4a428-1fb5-4e03-8af3-43eb3dc184d8";
 
@@ -196,13 +197,11 @@ const LeadForm = () => {
               <Label htmlFor="adresse" className="text-foreground font-medium">
                 Adresse *
               </Label>
-              <Input
-                id="adresse"
-                type="text"
-                placeholder="Vejnavn og husnummer, postnummer, by"
+              <AddressAutocomplete
                 value={formData.adresse}
-                onChange={(e) => updateField("adresse", e.target.value)}
-                className="h-12 rounded-xl"
+                onChange={(value) => updateField("adresse", value)}
+                placeholder="Begynd at skrive din adresse..."
+                className="flex h-12 w-full rounded-xl border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               />
             </div>
 
