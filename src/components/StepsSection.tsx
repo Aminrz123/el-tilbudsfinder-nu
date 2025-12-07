@@ -24,7 +24,7 @@ const steps = [
 const StepsSection = () => {
   return (
     <section className="py-12 md:py-16 px-4 bg-background">
-      <div className="container max-w-4xl">
+      <div className="container max-w-2xl">
         <h2 className="text-2xl md:text-3xl font-bold text-center text-foreground mb-10">
           Sådan fungerer det
         </h2>
