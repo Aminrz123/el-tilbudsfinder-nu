@@ -3,6 +3,7 @@ import { Zap, HelpCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -15,12 +16,20 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 const N8N_WEBHOOK_URL = "https://netpartner.app.n8n.cloud/webhook/60e4a428-1fb5-4e03-8af3-43eb3dc184d8";
 
 const LeadForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [acceptContact, setAcceptContact] = useState(false);
   const [formData, setFormData] = useState({
     boligtype: "",
     personer: "",
@@ -38,6 +47,11 @@ const LeadForm = () => {
     // Basic validation
     if (!formData.boligtype || !formData.personer || !formData.forbrug || !formData.adresse || !formData.navn || !formData.email || !formData.telefon) {
       toast.error("Udfyld venligst alle påkrævede felter");
+      return;
+    }
+
+    if (!acceptContact) {
+      toast.error("Du skal acceptere at blive kontaktet for at fortsætte");
       return;
     }
 
@@ -256,10 +270,70 @@ const LeadForm = () => {
               {isLoading ? "Sender..." : "Sammenlign nu"}
             </Button>
 
-            {/* Disclaimer */}
-            <p className="text-xs text-muted-foreground text-center leading-relaxed">
-              Ved at klikke på 'Sammenlign nu' accepterer du, at udvalgte elselskaber kontakter dig med tilbud.
-            </p>
+            {/* Accept checkbox */}
+            <div className="flex items-start gap-3 mt-4">
+              <Checkbox
+                id="acceptContact"
+                checked={acceptContact}
+                onCheckedChange={(checked) => setAcceptContact(checked === true)}
+                className="mt-0.5"
+              />
+              <Label htmlFor="acceptContact" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+                Jeg accepterer at blive kontaktet af udvalgte elselskaber med tilbud
+              </Label>
+            </div>
+
+            {/* Policy links */}
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button type="button" className="w-3 h-3 rounded-full bg-primary hover:bg-primary/80 transition-colors" aria-label="Handelsbetingelser" />
+                </DialogTrigger>
+                <DialogContent className="max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Handelsbetingelser</DialogTitle>
+                  </DialogHeader>
+                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                    <p>Indsæt dine handelsbetingelser her...</p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button type="button" className="w-3 h-3 rounded-full bg-primary hover:bg-primary/80 transition-colors" aria-label="Privatlivspolitik" />
+                </DialogTrigger>
+                <DialogContent className="max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Privatlivspolitik</DialogTitle>
+                  </DialogHeader>
+                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                    <p>Indsæt din privatlivspolitik her...</p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button type="button" className="w-3 h-3 rounded-full bg-primary hover:bg-primary/80 transition-colors" aria-label="Cookiepolitik" />
+                </DialogTrigger>
+                <DialogContent className="max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Cookiepolitik</DialogTitle>
+                  </DialogHeader>
+                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                    <p>Indsæt din cookiepolitik her...</p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Link labels */}
+            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+              <span>Handelsbetingelser</span>
+              <span>Privatlivspolitik</span>
+              <span>Cookiepolitik</span>
+            </div>
           </div>
         </form>
       </div>
