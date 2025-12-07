@@ -279,7 +279,7 @@ const LeadForm = () => {
                 className="h-6 w-6 mt-0.5"
               />
               <Label htmlFor="acceptContact" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                Jeg giver samtykke til Net-Partner.dk's privatlivspolitik. Samtidig giver jeg samtykke til at blive kontaktet af Net-Partner.dk's udvalgte el-leverandører (b.energy A/S, Velkommen A/S, samt Net-Partner.dk) via e-mail/telefon med tilbud på el. Jeg kan til enhver tid trække mit samtykke tilbage ved at klikke her. Jeg bekræfter, at jeg er over 18 år gammel.*
+                Jeg giver samtykke til Net-Partner.dk's privatlivspolitik. Samtidig giver jeg samtykke til at blive kontaktet af Net-Partner.dk's udvalgte el-leverandører via e-mail/telefon med tilbud på el. Jeg kan til enhver tid trække mit samtykke tilbage ved at klikke her. Jeg bekræfter, at jeg er over 18 år gammel.*
               </Label>
             </div>
 

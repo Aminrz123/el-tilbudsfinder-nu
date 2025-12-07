@@ -39,7 +39,7 @@ const Privatlivspolitik = () => {
           <p>
             Vi bruger dine oplysninger til at formidle kontakt mellem dig og elleverandører, 
             så de kan kontakte dig med tilbud. Vi deler dine oplysninger med de leverandører, 
-            som du har givet samtykke til: b.energy A/S, Velkommen A/S og Net-Partner.dk.
+            som du har givet samtykke til.
           </p>
 
           <p>
