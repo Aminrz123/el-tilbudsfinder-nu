@@ -13,35 +13,40 @@ const Forretningsmodel = () => {
           </Button>
         </Link>
 
-        <h1 className="text-3xl font-bold text-foreground mb-8">Vores forretningsmodel</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-8">Forretningsmodel</h1>
 
-        <div className="prose prose-sm max-w-none space-y-6 text-muted-foreground">
-          <section>
-            <h2 className="text-xl font-semibold text-foreground mb-3">Gratis for dig</h2>
-            <p>
-              Net-Partner.dk er 100% gratis at bruge. Du betaler aldrig for at modtage tilbud.
-            </p>
-          </section>
+        <div className="space-y-6 text-muted-foreground leading-relaxed">
+          <p>
+            Net-Partner.dk er en online platform, der hjælper danske forbrugere med at finde 
+            den bedste udbyder ved at indhente flere tilbud fra forskellige danske udbydere. 
+            Platformens mål er at gøre det nemt og overskueligt for forbrugerne at sammenligne 
+            og vælge den mest passende udbyder baseret på deres behov og præferencer.
+          </p>
 
-          <section>
-            <h2 className="text-xl font-semibold text-foreground mb-3">Uafhængighed</h2>
-            <p>
-              Leverandørerne konkurrerer om at give dig det bedste tilbud. Du er altid fri til at vælge - eller slet ingen.
-            </p>
-          </section>
+          <p>
+            Net-Partner.dk tilbyder en enkel og brugervenlig løsning, der sparer tid og penge 
+            for forbrugerne ved at automatisere processen med at modtage tilbud fra flere 
+            leverandører. Dette skaber værdi ved at:
+          </p>
 
-          <section>
-            <h2 className="text-xl font-semibold text-foreground mb-3">Sådan tjener vi penge</h2>
-            <p>
-              Vi modtager provision fra leverandører, når du indgår en aftale via vores service.
-            </p>
-          </section>
+          <ul className="space-y-3 pl-6">
+            <li className="flex items-start gap-3">
+              <span className="w-2 h-2 rounded-full bg-muted-foreground mt-2 shrink-0"></span>
+              <span>Give forbrugerne adgang til konkurrencedygtige priser.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="w-2 h-2 rounded-full bg-muted-foreground mt-2 shrink-0"></span>
+              <span>Sikre gennemsigtighed og overblik over markedet.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="w-2 h-2 rounded-full bg-muted-foreground mt-2 shrink-0"></span>
+              <span>Tilbyde en nem og hurtig sammenligningsproces.</span>
+            </li>
+          </ul>
 
-          <section className="pt-4 border-t border-border">
-            <p className="text-xs">
-              Sidst opdateret: {new Date().toLocaleDateString('da-DK')}
-            </p>
-          </section>
+          <p>
+            Net-Partner.dk modtager kommission, når en bruger tilmelder sig gennem platformen.
+          </p>
         </div>
       </div>
     </main>
