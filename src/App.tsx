@@ -6,6 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CookiePolicy from "./pages/CookiePolicy";
+import Brugerbetingelser from "./pages/Brugerbetingelser";
+import Forretningsmodel from "./pages/Forretningsmodel";
+import Privatlivspolitik from "./pages/Privatlivspolitik";
+import Afmeld from "./pages/Afmeld";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +22,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/cookiepolitik" element={<CookiePolicy />} />
+          <Route path="/brugerbetingelser" element={<Brugerbetingelser />} />
+          <Route path="/forretningsmodel" element={<Forretningsmodel />} />
+          <Route path="/privatlivspolitik" element={<Privatlivspolitik />} />
+          <Route path="/afmeld" element={<Afmeld />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
