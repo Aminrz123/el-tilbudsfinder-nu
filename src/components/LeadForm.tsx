@@ -283,6 +283,41 @@ const LeadForm = () => {
               </Label>
             </div>
 
+            {/* Policy links */}
+            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mt-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button type="button" className="underline hover:text-foreground transition-colors">
+                    Handelsbetingelser
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Handelsbetingelser</DialogTitle>
+                  </DialogHeader>
+                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                    <p>Indsæt dine handelsbetingelser her...</p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <span>•</span>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button type="button" className="underline hover:text-foreground transition-colors">
+                    Vilkår og betingelser
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Vilkår og betingelser</DialogTitle>
+                  </DialogHeader>
+                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                    <p>Indsæt dine vilkår og betingelser her...</p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+
           </div>
         </form>
       </div>
