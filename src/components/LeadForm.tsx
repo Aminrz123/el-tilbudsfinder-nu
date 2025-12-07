@@ -279,7 +279,7 @@ const LeadForm = () => {
                 className="mt-0.5"
               />
               <Label htmlFor="acceptContact" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                Jeg accepterer at blive kontaktet af udvalgte elselskaber med tilbud
+                Jeg giver samtykke til Eltjekket.dk's privatlivspolitik. Samtidig giver jeg samtykke til at blive kontaktet af Eltjekket.dk´s udvalgte el-leverandører (b.energy A/S, Velkommen A/S, samt Eltjekket.dk) via e-mail/telefon med tilbud på el. Jeg kan til enhver tid trække mit samtykke tilbage ved at klikke her. Jeg bekræfter, at jeg er over 18 år gammel.*
               </Label>
             </div>
 
