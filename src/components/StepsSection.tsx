@@ -5,56 +5,51 @@ const steps = [
     icon: FileText,
     number: "1",
     title: "Udfyld formularen",
-    description: "Indtast dine oplysninger om bolig, forbrug og kontaktinfo",
+    description: "Indtast dine oplysninger",
   },
   {
     icon: Search,
     number: "2",
-    title: "Vi finder de bedste tilbud",
-    description: "Udvalgte elselskaber modtager dine oplysninger og udarbejder tilbud",
+    title: "Vi finder tilbud",
+    description: "Elselskaber udarbejder tilbud",
   },
   {
     icon: Phone,
     number: "3",
     title: "Bliv kontaktet",
-    description: "Du bliver kontaktet direkte af elselskaberne med deres bedste priser",
+    description: "Du modtager de bedste priser",
   },
 ];
 
 const StepsSection = () => {
   return (
-    <section className="py-16 md:py-24 px-4 bg-background">
-      <div className="container max-w-6xl">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-4">
+    <section className="py-12 md:py-16 px-4 bg-background">
+      <div className="container max-w-4xl">
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-foreground mb-10">
           Sådan fungerer det
         </h2>
-        <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-          Tre simple trin til et bedre eltilbud
-        </p>
         
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4">
           {steps.map((step, index) => (
             <div
               key={step.number}
-              className="bg-card rounded-2xl p-8 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1 border border-border/50 animate-fade-up"
+              className="flex flex-col items-center text-center animate-fade-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="relative">
-                  <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center">
-                    <step.icon className="w-7 h-7 text-primary-foreground" />
-                  </div>
-                  <span className="absolute -top-2 -right-2 w-7 h-7 bg-card border-2 border-primary rounded-full flex items-center justify-center text-sm font-bold text-primary">
-                    {step.number}
-                  </span>
+              <div className="relative mb-4">
+                <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center">
+                  <step.icon className="w-5 h-5 text-primary-foreground" />
                 </div>
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-card border border-primary rounded-full flex items-center justify-center text-xs font-semibold text-primary">
+                  {step.number}
+                </span>
               </div>
               
-              <h3 className="text-xl font-bold text-foreground mb-3">
+              <h3 className="text-base font-semibold text-foreground mb-1">
                 {step.title}
               </h3>
               
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground max-w-[160px]">
                 {step.description}
               </p>
             </div>
