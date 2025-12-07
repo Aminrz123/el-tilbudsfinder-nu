@@ -3,6 +3,7 @@ import StepsSection from "@/components/StepsSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
+import CookieConsent from "@/components/CookieConsent";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <LeadForm />
       <BenefitsSection />
       <Footer />
+      <CookieConsent />
     </main>
   );
 };
