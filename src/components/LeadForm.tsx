@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Zap, HelpCircle, Loader2 } from "lucide-react";
+import { Zap, HelpCircle, Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +32,7 @@ const N8N_WEBHOOK_URL = "https://netpartner.app.n8n.cloud/webhook/60e4a428-1fb5-
 
 const LeadForm = () => {
   const navigate = useNavigate();
+  const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [acceptContact, setAcceptContact] = useState(false);
   const [formData, setFormData] = useState({
@@ -45,11 +46,24 @@ const LeadForm = () => {
     telefon: "",
   });
 
+  const handleNextStep = () => {
+    // Validate step 1 fields
+    if (!formData.boligtype || !formData.personer || !formData.forbrug || !formData.adresse) {
+      toast.error("Udfyld venligst alle påkrævede felter");
+      return;
+    }
+    setStep(2);
+  };
+
+  const handlePrevStep = () => {
+    setStep(1);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
-    if (!formData.boligtype || !formData.personer || !formData.forbrug || !formData.adresse || !formData.navn || !formData.email || !formData.telefon) {
+    // Validate step 2 fields
+    if (!formData.navn || !formData.email || !formData.telefon) {
       toast.error("Udfyld venligst alle påkrævede felter");
       return;
     }
@@ -100,214 +114,271 @@ const LeadForm = () => {
           </p>
         </div>
 
+        {/* Progress indicator */}
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <div className="flex items-center gap-2">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors ${step >= 1 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+              1
+            </div>
+            <span className={`text-sm font-medium ${step >= 1 ? 'text-foreground' : 'text-muted-foreground'}`}>
+              Boliginfo
+            </span>
+          </div>
+          <div className={`w-12 h-0.5 ${step >= 2 ? 'bg-primary' : 'bg-muted'}`} />
+          <div className="flex items-center gap-2">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors ${step >= 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+              2
+            </div>
+            <span className={`text-sm font-medium ${step >= 2 ? 'text-foreground' : 'text-muted-foreground'}`}>
+              Kontaktinfo
+            </span>
+          </div>
+        </div>
+
         <form
           onSubmit={handleSubmit}
           className="bg-card rounded-2xl shadow-card p-8 md:p-10 border border-border/50"
         >
-          <div className="space-y-6">
-            {/* Boligtype */}
-            <div className="space-y-2">
-              <Label htmlFor="boligtype" className="text-foreground font-medium">
-                Boligtype *
-              </Label>
-              <Select
-                value={formData.boligtype}
-                onValueChange={(value) => updateField("boligtype", value)}
-              >
-                <SelectTrigger className="h-12 rounded-xl">
-                  <SelectValue placeholder="Vælg boligtype" />
-                </SelectTrigger>
-                <SelectContent className="bg-card border-border">
-                  <SelectItem value="hus">Hus</SelectItem>
-                  <SelectItem value="lejlighed">Lejlighed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Antal personer */}
-            <div className="space-y-2">
-              <Label htmlFor="personer" className="text-foreground font-medium">
-                Antal personer i husstanden *
-              </Label>
-              <Input
-                id="personer"
-                type="number"
-                min="1"
-                max="10"
-                placeholder="F.eks. 2"
-                value={formData.personer}
-                onChange={(e) => updateField("personer", e.target.value)}
-                className="h-12 rounded-xl"
-              />
-            </div>
-
-            {/* Estimeret forbrug */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="forbrug" className="text-foreground font-medium">
-                  Estimeret forbrug (kWh/år) *
-                </Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs bg-card text-foreground border-border">
-                    <p>Gennemsnit: Lejlighed ca. 2.000 kWh, Hus ca. 4.000 kWh</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <Input
-                id="forbrug"
-                type="number"
-                placeholder="F.eks. 4000"
-                value={formData.forbrug}
-                onChange={(e) => updateField("forbrug", e.target.value)}
-                className="h-12 rounded-xl"
-              />
-              <p className="text-sm text-muted-foreground">
-                Gennemsnit: Lejlighed 2.000 kWh, Hus 4.000 kWh
-              </p>
-            </div>
-
-            {/* Nuværende elselskab */}
-            <div className="space-y-2">
-              <Label htmlFor="nuvarendeSelskab" className="text-foreground font-medium">
-                Nuværende elselskab (valgfrit)
-              </Label>
-              <ElectricityCompanyAutocomplete
-                value={formData.nuvarendeSelskab}
-                onChange={(value) => updateField("nuvarendeSelskab", value)}
-                placeholder="Begynd at skrive dit elselskab..."
-                className="flex h-12 w-full rounded-xl border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-              />
-            </div>
-
-            {/* Adresse */}
-            <div className="space-y-2">
-              <Label htmlFor="adresse" className="text-foreground font-medium">
-                Adresse *
-              </Label>
-              <AddressAutocomplete
-                value={formData.adresse}
-                onChange={(value) => updateField("adresse", value)}
-                placeholder="Begynd at skrive din adresse..."
-                className="flex h-12 w-full rounded-xl border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-              />
-            </div>
-
-            {/* Kontaktoplysninger sektion */}
-            <div className="pt-6 border-t border-border">
-              <h3 className="text-lg font-semibold text-foreground mb-4">
-                Kontaktoplysninger
+          {/* Step 1: Boliginfo */}
+          {step === 1 && (
+            <div className="space-y-6 animate-fade-in">
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                Om din bolig og forbrug
               </h3>
 
-              <div className="space-y-4">
-                {/* Fulde navn */}
-                <div className="space-y-2">
-                  <Label htmlFor="navn" className="text-foreground font-medium">
-                    Fulde navn *
-                  </Label>
-                  <Input
-                    id="navn"
-                    type="text"
-                    placeholder="Dit fulde navn"
-                    value={formData.navn}
-                    onChange={(e) => updateField("navn", e.target.value)}
-                    className="h-12 rounded-xl"
-                  />
-                </div>
+              {/* Boligtype */}
+              <div className="space-y-2">
+                <Label htmlFor="boligtype" className="text-foreground font-medium">
+                  Boligtype *
+                </Label>
+                <Select
+                  value={formData.boligtype}
+                  onValueChange={(value) => updateField("boligtype", value)}
+                >
+                  <SelectTrigger className="h-12 rounded-xl">
+                    <SelectValue placeholder="Vælg boligtype" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border">
+                    <SelectItem value="hus">Hus</SelectItem>
+                    <SelectItem value="lejlighed">Lejlighed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                {/* E-mail */}
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-foreground font-medium">
-                    E-mail *
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="din@email.dk"
-                    value={formData.email}
-                    onChange={(e) => updateField("email", e.target.value)}
-                    className="h-12 rounded-xl"
-                  />
-                </div>
+              {/* Antal personer */}
+              <div className="space-y-2">
+                <Label htmlFor="personer" className="text-foreground font-medium">
+                  Antal personer i husstanden *
+                </Label>
+                <Input
+                  id="personer"
+                  type="number"
+                  min="1"
+                  max="10"
+                  placeholder="F.eks. 2"
+                  value={formData.personer}
+                  onChange={(e) => updateField("personer", e.target.value)}
+                  className="h-12 rounded-xl"
+                />
+              </div>
 
-                {/* Telefonnummer */}
-                <div className="space-y-2">
-                  <Label htmlFor="telefon" className="text-foreground font-medium">
-                    Telefonnummer *
+              {/* Estimeret forbrug */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="forbrug" className="text-foreground font-medium">
+                    Estimeret forbrug (kWh/år) *
                   </Label>
-                  <Input
-                    id="telefon"
-                    type="tel"
-                    placeholder="12 34 56 78"
-                    value={formData.telefon}
-                    onChange={(e) => updateField("telefon", e.target.value)}
-                    className="h-12 rounded-xl"
-                  />
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs bg-card text-foreground border-border">
+                      <p>Gennemsnit: Lejlighed ca. 2.000 kWh, Hus ca. 4.000 kWh</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
+                <Input
+                  id="forbrug"
+                  type="number"
+                  placeholder="F.eks. 4000"
+                  value={formData.forbrug}
+                  onChange={(e) => updateField("forbrug", e.target.value)}
+                  className="h-12 rounded-xl"
+                />
+                <p className="text-sm text-muted-foreground">
+                  Gennemsnit: Lejlighed 2.000 kWh, Hus 4.000 kWh
+                </p>
+              </div>
+
+              {/* Nuværende elselskab */}
+              <div className="space-y-2">
+                <Label htmlFor="nuvarendeSelskab" className="text-foreground font-medium">
+                  Nuværende elselskab (valgfrit)
+                </Label>
+                <ElectricityCompanyAutocomplete
+                  value={formData.nuvarendeSelskab}
+                  onChange={(value) => updateField("nuvarendeSelskab", value)}
+                  placeholder="Begynd at skrive dit elselskab..."
+                  className="flex h-12 w-full rounded-xl border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                />
+              </div>
+
+              {/* Adresse */}
+              <div className="space-y-2">
+                <Label htmlFor="adresse" className="text-foreground font-medium">
+                  Adresse *
+                </Label>
+                <AddressAutocomplete
+                  value={formData.adresse}
+                  onChange={(value) => updateField("adresse", value)}
+                  placeholder="Begynd at skrive din adresse..."
+                  className="flex h-12 w-full rounded-xl border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                />
+              </div>
+
+              {/* Next button */}
+              <Button
+                type="button"
+                variant="hero"
+                size="xl"
+                className="w-full mt-6"
+                onClick={handleNextStep}
+              >
+                Næste
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </div>
+          )}
+
+          {/* Step 2: Kontaktinfo */}
+          {step === 2 && (
+            <div className="space-y-6 animate-fade-in">
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                Dine kontaktoplysninger
+              </h3>
+
+              {/* Fulde navn */}
+              <div className="space-y-2">
+                <Label htmlFor="navn" className="text-foreground font-medium">
+                  Fulde navn *
+                </Label>
+                <Input
+                  id="navn"
+                  type="text"
+                  placeholder="Dit fulde navn"
+                  value={formData.navn}
+                  onChange={(e) => updateField("navn", e.target.value)}
+                  className="h-12 rounded-xl"
+                />
+              </div>
+
+              {/* E-mail */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-foreground font-medium">
+                  E-mail *
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="din@email.dk"
+                  value={formData.email}
+                  onChange={(e) => updateField("email", e.target.value)}
+                  className="h-12 rounded-xl"
+                />
+              </div>
+
+              {/* Telefonnummer */}
+              <div className="space-y-2">
+                <Label htmlFor="telefon" className="text-foreground font-medium">
+                  Telefonnummer *
+                </Label>
+                <Input
+                  id="telefon"
+                  type="tel"
+                  placeholder="12 34 56 78"
+                  value={formData.telefon}
+                  onChange={(e) => updateField("telefon", e.target.value)}
+                  className="h-12 rounded-xl"
+                />
+              </div>
+
+              {/* Accept checkbox */}
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
+                <Checkbox
+                  id="acceptContact"
+                  checked={acceptContact}
+                  onCheckedChange={(checked) => setAcceptContact(checked === true)}
+                  className="h-6 w-6 mt-0.5"
+                />
+                <Label htmlFor="acceptContact" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+                  Jeg giver samtykke til Net-Partner.dk's privatlivspolitik. Samtidig giver jeg samtykke til at blive kontaktet af Net-Partner.dk's udvalgte el-leverandører via e-mail/telefon med tilbud på el. Jeg kan til enhver tid trække mit samtykke tilbage ved at klikke her. Jeg bekræfter, at jeg er over 18 år gammel.*
+                </Label>
+              </div>
+
+              {/* Policy links */}
+              <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button type="button" className="underline hover:text-foreground transition-colors">
+                      Handelsbetingelser
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-lg">
+                    <DialogHeader>
+                      <DialogTitle>Handelsbetingelser</DialogTitle>
+                    </DialogHeader>
+                    <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                      <p>Indsæt dine handelsbetingelser her...</p>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+                <span>•</span>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button type="button" className="underline hover:text-foreground transition-colors">
+                      Vilkår og betingelser
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-lg">
+                    <DialogHeader>
+                      <DialogTitle>Vilkår og betingelser</DialogTitle>
+                    </DialogHeader>
+                    <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                      <p>Indsæt dine vilkår og betingelser her...</p>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-4 mt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="xl"
+                  className="flex-1"
+                  onClick={handlePrevStep}
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Tilbage
+                </Button>
+                <Button
+                  type="submit"
+                  variant="hero"
+                  size="xl"
+                  className="flex-1"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Zap className="w-5 h-5" />
+                  )}
+                  {isLoading ? "Sender..." : "Sammenlign nu"}
+                </Button>
               </div>
             </div>
-
-            {/* Submit button */}
-            <Button variant="hero" size="xl" type="submit" className="w-full mt-6" disabled={isLoading}>
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Zap className="w-5 h-5" />
-              )}
-              {isLoading ? "Sender..." : "Sammenlign nu"}
-            </Button>
-
-            {/* Accept checkbox */}
-            <div className="flex items-start gap-4 mt-4 p-4 rounded-xl bg-muted/50 border border-border/50">
-              <Checkbox
-                id="acceptContact"
-                checked={acceptContact}
-                onCheckedChange={(checked) => setAcceptContact(checked === true)}
-                className="h-6 w-6 mt-0.5"
-              />
-              <Label htmlFor="acceptContact" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                Jeg giver samtykke til Net-Partner.dk's privatlivspolitik. Samtidig giver jeg samtykke til at blive kontaktet af Net-Partner.dk's udvalgte el-leverandører via e-mail/telefon med tilbud på el. Jeg kan til enhver tid trække mit samtykke tilbage ved at klikke her. Jeg bekræfter, at jeg er over 18 år gammel.*
-              </Label>
-            </div>
-
-            {/* Policy links */}
-            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground mt-4">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button type="button" className="underline hover:text-foreground transition-colors">
-                    Handelsbetingelser
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Handelsbetingelser</DialogTitle>
-                  </DialogHeader>
-                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
-                    <p>Indsæt dine handelsbetingelser her...</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-              <span>•</span>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button type="button" className="underline hover:text-foreground transition-colors">
-                    Vilkår og betingelser
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Vilkår og betingelser</DialogTitle>
-                  </DialogHeader>
-                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
-                    <p>Indsæt dine vilkår og betingelser her...</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-
-          </div>
+          )}
         </form>
       </div>
     </section>
