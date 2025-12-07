@@ -10,6 +10,7 @@ import Brugerbetingelser from "./pages/Brugerbetingelser";
 import Forretningsmodel from "./pages/Forretningsmodel";
 import Privatlivspolitik from "./pages/Privatlivspolitik";
 import Afmeld from "./pages/Afmeld";
+import Success from "./pages/Success";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/forretningsmodel" element={<Forretningsmodel />} />
           <Route path="/privatlivspolitik" element={<Privatlivspolitik />} />
           <Route path="/afmeld" element={<Afmeld />} />
+          <Route path="/tak" element={<Success />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
