@@ -283,57 +283,6 @@ const LeadForm = () => {
               </Label>
             </div>
 
-            {/* Policy links */}
-            <div className="flex items-center justify-center gap-4 mt-4">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button type="button" className="w-3 h-3 rounded-full bg-primary hover:bg-primary/80 transition-colors" aria-label="Handelsbetingelser" />
-                </DialogTrigger>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Handelsbetingelser</DialogTitle>
-                  </DialogHeader>
-                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
-                    <p>Indsæt dine handelsbetingelser her...</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button type="button" className="w-3 h-3 rounded-full bg-primary hover:bg-primary/80 transition-colors" aria-label="Privatlivspolitik" />
-                </DialogTrigger>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Privatlivspolitik</DialogTitle>
-                  </DialogHeader>
-                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
-                    <p>Indsæt din privatlivspolitik her...</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button type="button" className="w-3 h-3 rounded-full bg-primary hover:bg-primary/80 transition-colors" aria-label="Cookiepolitik" />
-                </DialogTrigger>
-                <DialogContent className="max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Cookiepolitik</DialogTitle>
-                  </DialogHeader>
-                  <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
-                    <p>Indsæt din cookiepolitik her...</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-
-            {/* Link labels */}
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-              <span>Handelsbetingelser</span>
-              <span>Privatlivspolitik</span>
-              <span>Cookiepolitik</span>
-            </div>
           </div>
         </form>
       </div>
