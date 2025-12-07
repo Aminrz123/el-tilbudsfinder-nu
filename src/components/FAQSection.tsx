@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -29,6 +30,39 @@ const faqItems = [
 ];
 
 const FAQSection = () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "faq-schema";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    });
+    
+    // Remove existing script if present
+    const existing = document.getElementById("faq-schema");
+    if (existing) {
+      existing.remove();
+    }
+    
+    document.head.appendChild(script);
+
+    return () => {
+      const scriptToRemove = document.getElementById("faq-schema");
+      if (scriptToRemove) {
+        scriptToRemove.remove();
+      }
+    };
+  }, []);
+
   return (
     <section className="py-16 px-4 bg-muted/30">
       <div className="container max-w-3xl">
