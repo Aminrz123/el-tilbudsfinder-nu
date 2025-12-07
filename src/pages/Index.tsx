@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import StepsSection from "@/components/StepsSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import LeadForm from "@/components/LeadForm";
+import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
 
@@ -12,6 +13,7 @@ const Index = () => {
       <StepsSection />
       <LeadForm />
       <BenefitsSection />
+      <FAQSection />
       <Footer />
       <CookieConsent />
     </main>
