@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Zap, HelpCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +31,7 @@ import ElectricityCompanyAutocomplete from "@/components/ElectricityCompanyAutoc
 const N8N_WEBHOOK_URL = "https://netpartner.app.n8n.cloud/webhook/60e4a428-1fb5-4e03-8af3-43eb3dc184d8";
 
 const LeadForm = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [acceptContact, setAcceptContact] = useState(false);
   const [formData, setFormData] = useState({
@@ -72,19 +74,8 @@ const LeadForm = () => {
         }),
       });
 
-      toast.success("Tak for din henvendelse! Du vil snart blive kontaktet med tilbud.");
-      
-      // Reset form
-      setFormData({
-        boligtype: "",
-        personer: "",
-        forbrug: "",
-        nuvarendeSelskab: "",
-        adresse: "",
-        navn: "",
-        email: "",
-        telefon: "",
-      });
+      // Redirect to success page
+      navigate("/tak");
     } catch (error) {
       console.error("Error sending to n8n:", error);
       toast.error("Der opstod en fejl. Prøv venligst igen.");
