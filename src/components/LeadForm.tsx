@@ -34,7 +34,8 @@ const LeadForm = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [acceptContact, setAcceptContact] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [acceptDataShare, setAcceptDataShare] = useState(false);
   const [formData, setFormData] = useState({
     boligtype: "",
     personer: "",
@@ -68,8 +69,8 @@ const LeadForm = () => {
       return;
     }
 
-    if (!acceptContact) {
-      toast.error("Du skal acceptere at blive kontaktet for at fortsætte");
+    if (!acceptTerms || !acceptDataShare) {
+      toast.error("Du skal acceptere begge betingelser for at fortsætte");
       return;
     }
 
@@ -302,15 +303,15 @@ const LeadForm = () => {
                 />
               </div>
 
-              {/* Accept checkbox */}
+              {/* Accept terms checkbox */}
               <div className="flex items-start gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
                 <Checkbox
-                  id="acceptContact"
-                  checked={acceptContact}
-                  onCheckedChange={(checked) => setAcceptContact(checked === true)}
+                  id="acceptTerms"
+                  checked={acceptTerms}
+                  onCheckedChange={(checked) => setAcceptTerms(checked === true)}
                   className="h-6 w-6 mt-0.5"
                 />
-                <Label htmlFor="acceptContact" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+                <Label htmlFor="acceptTerms" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
                   Jeg accepterer{" "}
                   <Dialog>
                     <DialogTrigger asChild>
@@ -338,6 +339,22 @@ const LeadForm = () => {
                     </DialogContent>
                   </Dialog>
                   {" "}og bekræfter, at personoplysningerne er korrekte.*
+                </Label>
+              </div>
+
+              {/* Accept data share checkbox */}
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
+                <Checkbox
+                  id="acceptDataShare"
+                  checked={acceptDataShare}
+                  onCheckedChange={(checked) => setAcceptDataShare(checked === true)}
+                  className="h-6 w-6 mt-0.5"
+                />
+                <Label htmlFor="acceptDataShare" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+                  Jeg samtykker til, at mine oplysninger må behandles af Net-Partner.dk og videregives til udvalgte el-leverandører. Tilbud formidles via telefon, mail eller sms, uafhængigt af om du er registreret på Robinsonlisten. Samtykket kan tilbagekaldes ved at skrive til{" "}
+                  <a href="mailto:kontakt@net-partner.dk" className="text-primary underline hover:text-foreground transition-colors">
+                    kontakt@net-partner.dk
+                  </a>.*
                 </Label>
               </div>
 
