@@ -311,43 +311,34 @@ const LeadForm = () => {
                   className="h-6 w-6 mt-0.5"
                 />
                 <Label htmlFor="acceptContact" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
-                  Jeg giver samtykke til Net-Partner.dk's privatlivspolitik. Samtidig giver jeg samtykke til at blive kontaktet af Net-Partner.dk's udvalgte el-leverandører via e-mail/telefon med tilbud på el. Jeg kan til enhver tid trække mit samtykke tilbage ved at klikke her. Jeg bekræfter, at jeg er over 18 år gammel.*
+                  Jeg accepterer{" "}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button type="button" className="underline hover:text-foreground transition-colors font-medium text-primary">
+                        brugerbetingelserne
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg">
+                      <DialogHeader>
+                        <DialogTitle>Brugerbetingelser</DialogTitle>
+                      </DialogHeader>
+                      <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
+                        <p>Ved at benytte Net-Partner.dk accepterer du vores brugervilkår:</p>
+                        <p>Net-Partner.dk er en gratis tjeneste, der sætter brugere i kontakt med udvalgte virksomheder.</p>
+                        <p>Når du udfylder skemaet på Net-Partner.dk, informerer du virksomhederne om dine behov, så de kan sende dig passende tilbud. Derefter vil udvalgte virksomheder kontakte dig med tilbud, hvis vi finder nogen, der opfylder dine kriterier.</p>
+                        <p>Du modtager også en bekræftelsesmail fra os med information om, hvilke virksomheder der har modtaget din henvendelse.</p>
+                        <p>Medmindre andet er aftalt, vil virksomhederne kontakte dig via telefon, e-mail eller SMS. Efter dette foregår al kontakt direkte mellem dig og virksomhederne.</p>
+                        <p>Du kan til enhver tid få dine oplysninger slettet, efter du har udfyldt skemaet. Kontakt os på <a href="mailto:kontakt@net-partner.dk" className="text-primary underline">kontakt@net-partner.dk</a>, så hjælper vi dig.</p>
+                        <p>
+                          <a href="/brugerbetingelser" className="text-primary underline hover:text-primary/80">
+                            Læs de fulde brugerbetingelser her.
+                          </a>
+                        </p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                  {" "}og bekræfter, at personoplysningerne er korrekte.*
                 </Label>
-              </div>
-
-              {/* Policy links */}
-              <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button type="button" className="underline hover:text-foreground transition-colors">
-                      Handelsbetingelser
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-lg">
-                    <DialogHeader>
-                      <DialogTitle>Handelsbetingelser</DialogTitle>
-                    </DialogHeader>
-                    <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
-                      <p>Indsæt dine handelsbetingelser her...</p>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-                <span>•</span>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button type="button" className="underline hover:text-foreground transition-colors">
-                      Vilkår og betingelser
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-lg">
-                    <DialogHeader>
-                      <DialogTitle>Vilkår og betingelser</DialogTitle>
-                    </DialogHeader>
-                    <div className="text-sm text-muted-foreground space-y-4 max-h-96 overflow-y-auto">
-                      <p>Indsæt dine vilkår og betingelser her...</p>
-                    </div>
-                  </DialogContent>
-                </Dialog>
               </div>
 
               {/* Buttons */}
