@@ -1,6 +1,5 @@
 import { Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroBackground from "@/assets/hero-background.jpg";
 
 const HeroSection = () => {
   const scrollToForm = () => {
@@ -9,12 +8,13 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center px-4 py-20 overflow-hidden">
-      {/* Background image with overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBackground})` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+      {/* Background with gradient and subtle pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-primary/5 to-primary/10" />
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.15) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      
+      {/* Floating elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       
       <div className="container max-w-3xl text-center relative z-10">
         {/* Badge */}
