@@ -76,17 +76,15 @@ const LeadForm = () => {
     setIsLoading(true);
 
     try {
-      await fetch(N8N_WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke("send-lead-email", {
+        body: {
           ...formData,
           timestamp: new Date().toISOString(),
           source: "Net-Partner.dk",
-        }),
+        },
       });
+
+      if (error) throw error;
 
       // Redirect to success page
       navigate("/tak");
