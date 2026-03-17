@@ -89,7 +89,7 @@ const LeadForm = () => {
       // Redirect to success page
       navigate("/tak");
     } catch (error) {
-      console.error("Error sending to n8n:", error);
+      console.error("Error sending lead:", error);
       toast.error("Der opstod en fejl. Prøv venligst igen.");
     } finally {
       setIsLoading(false);
