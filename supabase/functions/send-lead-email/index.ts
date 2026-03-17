@@ -51,7 +51,7 @@ serve(async (req) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Net-Partner <onboarding@resend.dev>",
+        from: "Net-Partner <noreply@net-partner.dk>",
         to: ["kontakt@net-partner.dk"],
         subject: `Nyt lead: ${navn} – ${forbrug} kWh/år`,
         html: htmlContent,
