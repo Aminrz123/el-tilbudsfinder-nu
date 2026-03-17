@@ -27,8 +27,7 @@ import {
 import { toast } from "sonner";
 import AddressAutocomplete from "@/components/AddressAutocomplete";
 import ElectricityCompanyAutocomplete from "@/components/ElectricityCompanyAutocomplete";
-
-const N8N_WEBHOOK_URL = "https://netpartner.app.n8n.cloud/webhook/60e4a428-1fb5-4e03-8af3-43eb3dc184d8";
+import { supabase } from "@/integrations/supabase/client";
 
 const LeadForm = () => {
   const navigate = useNavigate();
@@ -77,22 +76,20 @@ const LeadForm = () => {
     setIsLoading(true);
 
     try {
-      await fetch(N8N_WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke("send-lead-email", {
+        body: {
           ...formData,
           timestamp: new Date().toISOString(),
           source: "Net-Partner.dk",
-        }),
+        },
       });
+
+      if (error) throw error;
 
       // Redirect to success page
       navigate("/tak");
     } catch (error) {
-      console.error("Error sending to n8n:", error);
+      console.error("Error sending lead:", error);
       toast.error("Der opstod en fejl. Prøv venligst igen.");
     } finally {
       setIsLoading(false);
