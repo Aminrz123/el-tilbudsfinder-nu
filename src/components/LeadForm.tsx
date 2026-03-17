@@ -27,8 +27,7 @@ import {
 import { toast } from "sonner";
 import AddressAutocomplete from "@/components/AddressAutocomplete";
 import ElectricityCompanyAutocomplete from "@/components/ElectricityCompanyAutocomplete";
-
-const N8N_WEBHOOK_URL = "https://netpartner.app.n8n.cloud/webhook/60e4a428-1fb5-4e03-8af3-43eb3dc184d8";
+import { supabase } from "@/integrations/supabase/client";
 
 const LeadForm = () => {
   const navigate = useNavigate();
