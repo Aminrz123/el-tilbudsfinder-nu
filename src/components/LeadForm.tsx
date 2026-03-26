@@ -28,7 +28,7 @@ import { toast } from "sonner";
 import AddressAutocomplete from "@/components/AddressAutocomplete";
 import ElectricityCompanyAutocomplete from "@/components/ElectricityCompanyAutocomplete";
 import { supabase } from "@/integrations/supabase/client";
-import abstractBg from "@/assets/abstract-energy.jpg";
+import formBg from "@/assets/form-bg.jpg";
 
 const LeadForm = () => {
   const navigate = useNavigate();
@@ -101,8 +101,8 @@ const LeadForm = () => {
     <section id="lead-form" className="py-16 md:py-24 px-4 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        <img src={abstractBg} alt="" className="w-full h-full object-cover" aria-hidden="true" loading="lazy" />
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+        <img src={formBg} alt="" className="w-full h-full object-cover" aria-hidden="true" loading="lazy" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/[0.92] via-background/85 to-background/[0.65]" />
       </div>
 
       <div className="container max-w-2xl relative z-10">
