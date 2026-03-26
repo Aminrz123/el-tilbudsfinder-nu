@@ -102,7 +102,7 @@ const LeadForm = () => {
       {/* Background */}
       <div className="absolute inset-0">
         <img src={formBg} alt="" className="w-full h-full object-cover" aria-hidden="true" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/[0.92] via-background/85 to-background/[0.65]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/70 to-background/40" />
       </div>
 
       <div className="container max-w-2xl relative z-10">
