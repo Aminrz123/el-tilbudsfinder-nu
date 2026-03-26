@@ -26,7 +26,7 @@ const benefits = [
 
 const BenefitsSection = () => {
   return (
-    <section className="py-20 md:py-28 px-4 relative overflow-hidden">
+    <section id="benefits" className="py-20 md:py-28 px-4 relative overflow-hidden">
       {/* Background image with overlay */}
       <div className="absolute inset-0">
         <img

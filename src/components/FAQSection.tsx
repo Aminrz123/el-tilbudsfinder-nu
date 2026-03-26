@@ -59,7 +59,7 @@ const FAQSection = () => {
   }, []);
 
   return (
-    <section className="py-20 md:py-28 px-4 relative overflow-hidden bg-background">
+    <section id="faq" className="py-20 md:py-28 px-4 relative overflow-hidden bg-background">
       {/* Decorative */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
       
