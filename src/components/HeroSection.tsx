@@ -102,25 +102,6 @@ const HeroSection = () => {
             </div>
           ))}
         </div>
-
-        {/* Partner logos */}
-        <div className="mt-16 animate-fade-up" style={{ animationDelay: "0.5s" }}>
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest text-center mb-6">
-            Udvalgte elselskaber du kan sammenligne
-          </p>
-          <div className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
-            {["Norlys", "OK", "Vindstød", "Andel Energi", "EWII"].map((name) => (
-              <div
-                key={name}
-                className="px-5 py-2.5 rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 hover:bg-card/80 transition-all duration-300"
-              >
-                <span className="text-sm md:text-base font-bold text-foreground/50 hover:text-foreground/80 transition-colors">
-                  {name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
