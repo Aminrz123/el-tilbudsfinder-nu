@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { MessageCircle } from "lucide-react";
 
 const faqItems = [
   {
@@ -47,40 +48,46 @@ const FAQSection = () => {
       }))
     });
     
-    // Remove existing script if present
     const existing = document.getElementById("faq-schema");
-    if (existing) {
-      existing.remove();
-    }
-    
+    if (existing) existing.remove();
     document.head.appendChild(script);
 
     return () => {
       const scriptToRemove = document.getElementById("faq-schema");
-      if (scriptToRemove) {
-        scriptToRemove.remove();
-      }
+      if (scriptToRemove) scriptToRemove.remove();
     };
   }, []);
 
   return (
-    <section className="py-16 px-4 bg-muted/30">
-      <div className="container max-w-3xl">
-        <h2 className="text-2xl font-bold text-foreground text-center mb-8">
-          Ofte stillede spørgsmål
-        </h2>
-        <Accordion type="single" collapsible className="w-full">
-          {faqItems.map((item, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-left text-foreground hover:text-primary">
-                {item.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                {item.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+    <section className="py-20 md:py-28 px-4 relative overflow-hidden bg-background">
+      {/* Decorative */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
+      
+      <div className="container max-w-3xl relative z-10">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/8 text-primary text-sm font-medium mb-4">
+            <MessageCircle className="w-4 h-4" />
+            <span>FAQ</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+            Ofte stillede spørgsmål
+          </h2>
+        </div>
+        
+        <div className="bg-card/80 backdrop-blur-sm rounded-2xl border border-border/50 shadow-card p-6 md:p-8">
+          <Accordion type="single" collapsible className="w-full">
+            {faqItems.map((item, index) => (
+              <AccordionItem key={index} value={`item-${index}`} className="border-border/50">
+                <AccordionTrigger className="text-left text-foreground hover:text-primary py-5 text-base font-medium">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
       </div>
     </section>
   );

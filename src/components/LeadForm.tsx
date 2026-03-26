@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Zap, HelpCircle, Loader2, ArrowRight, ArrowLeft } from "lucide-react";
+import { Zap, HelpCircle, Loader2, ArrowRight, ArrowLeft, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import AddressAutocomplete from "@/components/AddressAutocomplete";
 import ElectricityCompanyAutocomplete from "@/components/ElectricityCompanyAutocomplete";
 import { supabase } from "@/integrations/supabase/client";
+import abstractBg from "@/assets/abstract-energy.jpg";
 
 const LeadForm = () => {
   const navigate = useNavigate();
@@ -47,7 +48,6 @@ const LeadForm = () => {
   });
 
   const handleNextStep = () => {
-    // Validate step 1 fields
     if (!formData.boligtype || !formData.personer || !formData.forbrug || !formData.adresse) {
       toast.error("Udfyld venligst alle påkrævede felter");
       return;
@@ -62,7 +62,6 @@ const LeadForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate step 2 fields
     if (!formData.navn || !formData.email || !formData.telefon) {
       toast.error("Udfyld venligst alle påkrævede felter");
       return;
@@ -85,8 +84,6 @@ const LeadForm = () => {
       });
 
       if (error) throw error;
-
-      // Redirect to success page
       navigate("/tak");
     } catch (error) {
       console.error("Error sending lead:", error);
@@ -101,10 +98,19 @@ const LeadForm = () => {
   };
 
   return (
-    <section id="lead-form" className="py-16 md:py-24 px-4 gradient-hero">
-      <div className="container max-w-2xl">
+    <section id="lead-form" className="py-16 md:py-24 px-4 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0">
+        <img src={abstractBg} alt="" className="w-full h-full object-cover" aria-hidden="true" loading="lazy" />
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+      </div>
+
+      <div className="container max-w-2xl relative z-10">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
+            Få tilbud
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
             Beregn dit elforbrug
           </h2>
           <p className="text-muted-foreground">
@@ -115,16 +121,16 @@ const LeadForm = () => {
         {/* Progress indicator */}
         <div className="flex items-center justify-center gap-4 mb-8">
           <div className="flex items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors ${step >= 1 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${step >= 1 ? 'gradient-primary text-primary-foreground shadow-button' : 'bg-muted text-muted-foreground'}`}>
               1
             </div>
             <span className={`text-sm font-medium ${step >= 1 ? 'text-foreground' : 'text-muted-foreground'}`}>
               Boliginfo
             </span>
           </div>
-          <div className={`w-12 h-0.5 ${step >= 2 ? 'bg-primary' : 'bg-muted'}`} />
+          <div className={`w-12 h-0.5 transition-colors duration-300 ${step >= 2 ? 'bg-primary' : 'bg-muted'}`} />
           <div className="flex items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors ${step >= 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${step >= 2 ? 'gradient-primary text-primary-foreground shadow-button' : 'bg-muted text-muted-foreground'}`}>
               2
             </div>
             <span className={`text-sm font-medium ${step >= 2 ? 'text-foreground' : 'text-muted-foreground'}`}>
@@ -135,7 +141,7 @@ const LeadForm = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-card rounded-2xl shadow-card p-8 md:p-10 border border-border/50"
+          className="bg-card/90 backdrop-blur-md rounded-2xl shadow-card-hover p-8 md:p-10 border border-border/50"
         >
           {/* Step 1: Boliginfo */}
           {step === 1 && (
@@ -144,7 +150,6 @@ const LeadForm = () => {
                 Om din bolig og forbrug
               </h3>
 
-              {/* Boligtype */}
               <div className="space-y-2">
                 <Label htmlFor="boligtype" className="text-foreground font-medium">
                   Boligtype *
@@ -163,7 +168,6 @@ const LeadForm = () => {
                 </Select>
               </div>
 
-              {/* Antal personer */}
               <div className="space-y-2">
                 <Label htmlFor="personer" className="text-foreground font-medium">
                   Antal personer i husstanden *
@@ -180,7 +184,6 @@ const LeadForm = () => {
                 />
               </div>
 
-              {/* Estimeret forbrug */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Label htmlFor="forbrug" className="text-foreground font-medium">
@@ -208,7 +211,6 @@ const LeadForm = () => {
                 </p>
               </div>
 
-              {/* Nuværende elselskab */}
               <div className="space-y-2">
                 <Label htmlFor="nuvarendeSelskab" className="text-foreground font-medium">
                   Nuværende elselskab (valgfrit)
@@ -221,7 +223,6 @@ const LeadForm = () => {
                 />
               </div>
 
-              {/* Adresse */}
               <div className="space-y-2">
                 <Label htmlFor="adresse" className="text-foreground font-medium">
                   Adresse *
@@ -234,12 +235,11 @@ const LeadForm = () => {
                 />
               </div>
 
-              {/* Next button */}
               <Button
                 type="button"
                 variant="hero"
                 size="xl"
-                className="w-full mt-6"
+                className="w-full mt-6 shadow-button"
                 onClick={handleNextStep}
               >
                 Næste
@@ -255,7 +255,6 @@ const LeadForm = () => {
                 Dine kontaktoplysninger
               </h3>
 
-              {/* Fulde navn */}
               <div className="space-y-2">
                 <Label htmlFor="navn" className="text-foreground font-medium">
                   Fulde navn *
@@ -270,7 +269,6 @@ const LeadForm = () => {
                 />
               </div>
 
-              {/* E-mail */}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-foreground font-medium">
                   E-mail *
@@ -285,7 +283,6 @@ const LeadForm = () => {
                 />
               </div>
 
-              {/* Telefonnummer */}
               <div className="space-y-2">
                 <Label htmlFor="telefon" className="text-foreground font-medium">
                   Telefonnummer *
@@ -300,7 +297,6 @@ const LeadForm = () => {
                 />
               </div>
 
-              {/* Accept terms checkbox */}
               <div className="flex items-start gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
                 <Checkbox
                   id="acceptTerms"
@@ -339,7 +335,6 @@ const LeadForm = () => {
                 </Label>
               </div>
 
-              {/* Accept data share checkbox */}
               <div className="flex items-start gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
                 <Checkbox
                   id="acceptDataShare"
@@ -355,7 +350,6 @@ const LeadForm = () => {
                 </Label>
               </div>
 
-              {/* Buttons */}
               <div className="flex gap-4 mt-6">
                 <Button
                   type="button"
@@ -371,7 +365,7 @@ const LeadForm = () => {
                   type="submit"
                   variant="hero"
                   size="xl"
-                  className="flex-1"
+                  className="flex-1 shadow-button"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -381,6 +375,12 @@ const LeadForm = () => {
                   )}
                   {isLoading ? "Sender..." : "Sammenlign nu"}
                 </Button>
+              </div>
+
+              {/* Trust badge */}
+              <div className="flex items-center justify-center gap-2 mt-4 text-xs text-muted-foreground">
+                <Shield className="w-4 h-4" />
+                <span>Dine data er sikre og krypterede</span>
               </div>
             </div>
           )}
