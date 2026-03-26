@@ -37,9 +37,13 @@ serve(async (req) => {
         lastname,
         phone: telefon || '',
         address: adresse || '',
-        // Custom properties (stored in notes if custom props don't exist)
         hs_lead_status: 'NEW',
-        message: `Boligtype: ${boligtype}, Personer: ${personer}, Forbrug: ${forbrug} kWh/år, Nuværende selskab: ${nuvarendeSelskab || 'Ikke angivet'}, Adresse: ${adresse}`,
+        // Custom HubSpot properties
+        boligtype: boligtype || '',
+        antal_personer: personer || '',
+        forbrug: forbrug || '',
+        nuvaerende_selskab: nuvarendeSelskab || '',
+        adresse: adresse || '',
       },
     };
 
