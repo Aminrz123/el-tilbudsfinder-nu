@@ -17,8 +17,8 @@ const HeroSection = () => {
           className="w-full h-full object-cover scale-105"
           aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/50 to-primary/10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/70 via-background/40 to-primary/5" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
       </div>
 
       {/* Floating glow orbs */}
