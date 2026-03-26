@@ -114,7 +114,22 @@ const LeadForm = () => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke("send-lead-email", {
+      // Save lead to database
+      const { error: dbError } = await supabase.from("leads").insert({
+        boligtype: formData.boligtype,
+        personer: formData.personer,
+        forbrug: formData.forbrug,
+        nuvaerende_selskab: formData.nuvarendeSelskab || null,
+        adresse: formData.adresse,
+        navn: formData.navn,
+        email: formData.email,
+        telefon: formData.telefon,
+      });
+
+      if (dbError) console.error("DB error:", dbError);
+
+      // Send email notification
+      const { error } = await supabase.functions.invoke("send-lead-email", {
         body: {
           ...formData,
           timestamp: new Date().toISOString(),

@@ -11,6 +11,8 @@ import Forretningsmodel from "./pages/Forretningsmodel";
 import Privatlivspolitik from "./pages/Privatlivspolitik";
 import Afmeld from "./pages/Afmeld";
 import Success from "./pages/Success";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/privatlivspolitik" element={<Privatlivspolitik />} />
           <Route path="/afmeld" element={<Afmeld />} />
           <Route path="/tak" element={<Success />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
