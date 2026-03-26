@@ -3,7 +3,7 @@ import { CheckCircle, Zap, Users, Clock } from "lucide-react";
 const usps = [
   { icon: CheckCircle, text: "Personlig rådgivning" },
   { icon: Clock, text: "Skift elselskab på 2 min" },
-  { icon: Users, text: "1.000+ har allerede sparet" },
+  { icon: Users, text: "Sammenlign flere elselskaber" },
 ];
 
 const TopBar = () => {
