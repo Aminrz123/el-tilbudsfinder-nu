@@ -148,22 +148,22 @@ const LeadForm = () => {
         <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
           
           {/* Left side: Steps + facts */}
-          <div className="lg:col-span-2 space-y-10">
+          <div className="lg:col-span-2 space-y-8">
             {/* Section header */}
-            <div>
-              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 backdrop-blur-sm text-primary text-sm font-semibold mb-4">
+            <div className="bg-card/90 backdrop-blur-md rounded-2xl p-6 border border-border/50 shadow-card">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
                 Så nemt er det
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
                 3 nemme trin
               </h2>
-              <p className="text-foreground/70 text-lg">
+              <p className="text-foreground/80 text-lg font-medium">
                 Fra formular til billigere strøm
               </p>
             </div>
 
             {/* Steps - vertical */}
-            <div className="space-y-6">
+            <div className="bg-card/90 backdrop-blur-md rounded-2xl p-6 border border-border/50 shadow-card space-y-5">
               {steps.map((s, index) => (
                 <div key={s.number} className="flex gap-4 items-start group">
                   <div className="flex flex-col items-center">
@@ -176,29 +176,26 @@ const LeadForm = () => {
                   </div>
                   <div className="pt-1">
                     <h3 className="text-lg font-bold text-foreground mb-1">{s.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{s.description}</p>
+                    <p className="text-foreground/70 text-sm leading-relaxed">{s.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Divider */}
-            <div className="w-full h-px bg-border/50" />
-
             {/* Inspiring facts */}
-            <div>
-              <h3 className="text-sm font-semibold text-primary uppercase tracking-wider mb-5">
+            <div className="bg-card/90 backdrop-blur-md rounded-2xl p-6 border border-border/50 shadow-card">
+              <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-5">
                 Vidste du?
               </h3>
               <div className="space-y-5">
                 {facts.map((fact) => (
                   <div key={fact.stat} className="flex gap-4 items-start group">
-                    <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
+                    <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/25 transition-colors">
                       <fact.icon className="w-5 h-5 text-accent" />
                     </div>
                     <div>
-                      <span className="text-xl font-bold text-foreground">{fact.stat}</span>
-                      <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">{fact.label}</p>
+                      <span className="text-xl font-extrabold text-foreground">{fact.stat}</span>
+                      <p className="text-sm text-foreground/70 leading-relaxed mt-0.5">{fact.label}</p>
                     </div>
                   </div>
                 ))}
