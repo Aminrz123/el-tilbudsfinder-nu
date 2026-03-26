@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import LeadForm from "@/components/LeadForm";
@@ -8,6 +9,7 @@ import CookieConsent from "@/components/CookieConsent";
 const Index = () => {
   return (
     <main className="min-h-screen">
+      <Navbar />
       <HeroSection />
       <LeadForm />
       <BenefitsSection />
