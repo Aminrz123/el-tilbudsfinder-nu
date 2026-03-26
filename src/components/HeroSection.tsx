@@ -39,7 +39,7 @@ const HeroSection = () => {
         </h1>
         
         {/* Subtitle */}
-        <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-12 animate-fade-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
+        <p className="text-lg md:text-xl text-foreground/80 max-w-xl mx-auto mb-12 animate-fade-up leading-relaxed font-medium" style={{ animationDelay: "0.2s" }}>
           Udfyld formularen på 2 minutter og modtag de bedste tilbud fra udvalgte elselskaber
         </p>
         
