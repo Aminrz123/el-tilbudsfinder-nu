@@ -128,16 +128,29 @@ const LeadForm = () => {
 
       if (dbError) console.error("DB error:", dbError);
 
-      // Send email notification
-      const { error } = await supabase.functions.invoke("send-lead-email", {
+      // Send email notification (don't block on failure)
+      supabase.functions.invoke("send-lead-email", {
         body: {
           ...formData,
           timestamp: new Date().toISOString(),
           source: "Net-Partner.dk",
         },
-      });
+      }).catch((err) => console.error("Email error:", err));
 
-      if (error) throw error;
+      // Sync to HubSpot (don't block on failure)
+      supabase.functions.invoke("sync-hubspot", {
+        body: {
+          navn: formData.navn,
+          email: formData.email,
+          telefon: formData.telefon,
+          adresse: formData.adresse,
+          boligtype: formData.boligtype,
+          personer: formData.personer,
+          forbrug: formData.forbrug,
+          nuvarendeSelskab: formData.nuvarendeSelskab,
+        },
+      }).catch((err) => console.error("HubSpot sync error:", err));
+
       navigate("/tak");
     } catch (error) {
       console.error("Error sending lead:", error);
