@@ -38,11 +38,10 @@ serve(async (req) => {
         phone: telefon || '',
         address: adresse || '',
         hs_lead_status: 'NEW',
-        // Custom HubSpot properties — feltnavne skal matche HubSpot internal names
+        // Custom HubSpot properties
         boligtype: boligtype || '',
         antal_personer: personer || '',
         forbrug: forbrug || '',
-        nuv_rende_selskab: nuvarendeSelskab || '',
         adresse: adresse || '',
       },
     };
