@@ -42,7 +42,6 @@ serve(async (req) => {
         boligtype: boligtype || '',
         antal_personer: personer || '',
         forbrug: forbrug || '',
-        nuvaerende_selskab: nuvarendeSelskab || '',
         adresse: adresse || '',
       },
     };
