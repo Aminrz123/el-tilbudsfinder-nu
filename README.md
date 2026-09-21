@@ -1,73 +1,132 @@
-# Welcome to your Lovable project
+# Net-Partner.dk
 
-## Project info
+En dansk lead-genereringsside, der hjælper husstande med at sammenligne elpriser og finde en billigere elaftale. Brugeren udfylder en simpel formular, og dataen gemmes i en sikker database, synkroniseres til HubSpot og sendes som e-mail notifikation.
 
-**URL**: https://lovable.dev/projects/582c60b2-161a-46f8-b963-eaaa942a456a
+- **Live site:** https://net-partner.dk
+- **Lovable project:** https://lovable.dev/projects/582c60b2-161a-46f8-b963-eaaa942a456a
 
-## How can I edit this code?
+## Teknologier
 
-There are several ways of editing your application.
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **State & routing:** TanStack Query, React Router, React Hook Form + Zod
+- **Backend:** Lovable Cloud (Supabase) — PostgreSQL, Auth, Edge Functions
+- **E-mail:** Resend (`supabase/functions/send-lead-email`)
+- **CRM-integration:** HubSpot (`supabase/functions/sync-hubspot`)
 
-**Use Lovable**
+## Struktur
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/582c60b2-161a-46f8-b963-eaaa942a456a) and start prompting.
+```text
+src/
+  components/      # UI-komponenter, sektionskomponenter og shadcn/ui
+  pages/           # Sider: forsiden, tekstsider, admin, success, 404
+  integrations/    # Supabase klient og genererede typer
+  hooks/           # Fælles hooks
+  lib/             # Hjælpefunktioner
+  assets/          # Billeder
+supabase/
+  functions/       # Edge Functions: send-lead-email, sync-hubspot
+  migrations/      # Database-skema
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+## Sider og funktioner
 
-**Use your preferred IDE**
+| Side | Sti | Formål |
+|------|-----|--------|
+| Forside | `/` | Hero, lead-formular, fordele, FAQ |
+| Tak-side | `/tak` | Bekræftelse efter indsendelse |
+| Admin login | `/admin` | Login til admin-dashboard |
+| Admin dashboard | `/admin/dashboard` | Se, opdater status og slet leads |
+| Brugerbetingelser | `/brugerbetingelser` | Juridisk tekst |
+| Cookiepolitik | `/cookiepolitik` | Cookie-information |
+| Privatlivspolitik | `/privatlivspolitik` | Privatlivsbetingelser |
+| Forretningsmodel | `/forretningsmodel` | Beskrivelse af forretningsmodellen |
+| Afbestilling | `/afmeld` | Formular til at afmelde/abonnement |
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Lead-formularen
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Trin 1: boligtype, antal personer, årligt forbrug, nuværende selskab, adresse
+- Trin 2: navn, e-mail, telefon
+- Samtykke til brugerbetingelser og datadeling via to checkboxes
+- Validering med Zod
+- Adresse- og elselskabs-autofuldførelse
 
-Follow these steps:
+### Backend / automatisering
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Nye leads gemmes i `public.leads` tabellen
+- `sync-hubspot` opretter eller opdaterer kontakten i HubSpot med properties:
+  - `firstname`, `lastname`, `email`, `phone`, `address`
+  - `boligtype`, `antal_personer`, `forbrug`, `adresse`
+- `send-lead-email` sender en HTML-e-mail med lead-detaljer fra `noreply@net-partner.dk`
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Admin-system
 
-# Step 3: Install the necessary dependencies.
-npm i
+- Adgang styres via Supabase Auth + `public.user_roles`
+- Kun brugere med `admin`-rollen kan se og redigere leads
+- Opret en admin-bruger i Supabase Auth, og tilføj derefter rollen i `public.user_roles`
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## Kom i gang
+
+1. Klon repoet og installer afhængigheder:
+
+```bash
+npm install
+```
+
+2. Kopier miljøvariablerne (værdierne findes i Lovable Cloud / din `.env`):
+
+```bash
+# Frontend
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_PUBLISHABLE_KEY=...
+VITE_SUPABASE_PROJECT_ID=...
+
+# Backend (Edge Functions)
+RESEND_API_KEY=...
+HUBSPOT_API_KEY=...
+```
+
+3. Start udviklingsserveren:
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Byg til produktion:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build
+```
 
-**Use GitHub Codespaces**
+## Database-skema
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```sql
+CREATE TABLE public.leads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  boligtype TEXT NOT NULL,
+  personer TEXT NOT NULL,
+  forbrug TEXT NOT NULL,
+  nuvaerende_selskab TEXT,
+  adresse TEXT NOT NULL,
+  navn TEXT NOT NULL,
+  email TEXT NOT NULL,
+  telefon TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'ny',
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
 
-## What technologies are used for this project?
+## Deployment
 
-This project is built with:
+Projektet deployes automatisk via Lovable. Når du publicerer, bygges og hostes frontend, mens backend-funktioner deployes til Lovable Cloud.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Efter ændringer i Edge Functions skal du huske at deploye dem igen fra Lovable.
 
-## How can I deploy this project?
+## Integrationer
 
-Simply open [Lovable](https://lovable.dev/projects/582c60b2-161a-46f8-b963-eaaa942a456a) and click on Share -> Publish.
+- **HubSpot:** Kræver en Private App med `crm.objects.contacts.read` og `crm.objects.contacts.write` scopes.
+- **Resend:** Kræver et verificeret afsender-domæne (`net-partner.dk`).
 
-## Can I connect a custom domain to my Lovable project?
+## Udviklet med
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Bygget i [Lovable](https://lovable.dev) med React, TypeScript og Tailwind CSS.
