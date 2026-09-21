@@ -1,69 +1,132 @@
-# El Pris Guide
+# Net-Partner.dk
 
-Lav en komplet dansk lead-genereringsside, der matcher denne stil: moderne, ren, hvid/blå gradient baggrund, afrundede kort, tydelige sektioner, simple ikoner og klare CTA-knapper. Layoutet skal ligne en el-beregner/lead-landingpage.
+En dansk lead-genereringsside, der hjælper husstande med at sammenligne elpriser og finde en billigere elaftale. Brugeren udfylder en simpel formular, og dataen gemmes i en sikker database, synkroniseres til HubSpot og sendes som e-mail notifikation.
 
-Siden skal indeholde:
+- **Live site:** https://net-partner.dk
+- **Lovable project:** https://lovable.dev/projects/582c60b2-161a-46f8-b963-eaaa942a456a
 
-1) HERO SECTION
-– Stor overskrift: “Sammenlign elpriser og få de bedste tilbud”
-– Subtekst: “Gratis og uforpligtende”
-– Kort forklaring: “Udfyld vores simple elberegner, og bliv kontaktet af udvalgte elselskaber med deres bedste tilbud. Det er hurtigt, nemt og helt gratis.”
-– Blå CTA-knap: “Start beregning”
-– Et simpelt lyn-ikon over overskriften
-– Blød blå/hvid gradient baggrund
+## Teknologier
 
-2) TRE TRIN
-Tre hvide kort med skygge, vandret layout:
-1: “Udfyld formularen” – “Indtast dine oplysninger om bolig, forbrug og kontaktinfo”
-2: “Vi finder de bedste tilbud” – “Udvalgte elselskaber modtager dine oplysninger og udarbejder tilbud”
-3: “Bliv kontaktet” – “Du bliver kontaktet direkte af elselskaberne med deres bedste priser”
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **State & routing:** TanStack Query, React Router, React Hook Form + Zod
+- **Backend:** Lovable Cloud (Supabase) — PostgreSQL, Auth, Edge Functions
+- **E-mail:** Resend (`supabase/functions/send-lead-email`)
+- **CRM-integration:** HubSpot (`supabase/functions/sync-hubspot`)
 
-3) FORDELS-SEKTION (grøn baggrund)
-Titel: “Hvorfor Net-Partner.dk?”
-Fire punkter med grønne check-ikoner:
-– “100% gratis — Ingen skjulte gebyrer eller bindinger”
-– “Uforpligtende — Du bestemmer selv, hvilket tilbud du vil vælge”
-– “Hurtig proces — Udfyld formularen på under 2 minutter”
-– “Personlige tilbud — Få skræddersyede priser baseret på dit forbrug”
+## Struktur
 
-4) EL-BEREGNER LEAD-FORMULAR
-Hvidt card med skygge:
-– Dropdown: “Boligtype” (Hus / Lejlighed)
-– Antal personer i husstanden (nummerfelt)
-– Estimeret forbrug (kWh/år) + hjælpetekst: “Gennemsnit: Lejlighed 2.000 kWh, Hus 4.000 kWh”
-– Nuværende elselskab (valgfrit felt)
-– Adressefelt
-– Sektion “Kontaktoplysninger”: Fulde navn, E-mail, Telefonnummer
-– Stor blå CTA-knap: “Sammenlign nu”
-– Disclaimer: “Ved at klikke på ‘Sammenlign nu’ accepterer du, at udvalgte elselskaber kontakter dig med tilbud.”
+```text
+src/
+  components/      # UI-komponenter, sektionskomponenter og shadcn/ui
+  pages/           # Sider: forsiden, tekstsider, admin, success, 404
+  integrations/    # Supabase klient og genererede typer
+  hooks/           # Fælles hooks
+  lib/             # Hjælpefunktioner
+  assets/          # Billeder
+supabase/
+  functions/       # Edge Functions: send-lead-email, sync-hubspot
+  migrations/      # Database-skema
+```
 
-Designkrav:
-– Bløde skygger, afrundede hjørner, god spacing
-– Minimalistiske ikoner
-– Alt tekst på dansk
-– Fokus på konvertering og professionelt look
+## Sider og funktioner
 
-Generér hele siden ud fra dette.
+| Side | Sti | Formål |
+|------|-----|--------|
+| Forside | `/` | Hero, lead-formular, fordele, FAQ |
+| Tak-side | `/tak` | Bekræftelse efter indsendelse |
+| Admin login | `/admin` | Login til admin-dashboard |
+| Admin dashboard | `/admin/dashboard` | Se, opdater status og slet leads |
+| Brugerbetingelser | `/brugerbetingelser` | Juridisk tekst |
+| Cookiepolitik | `/cookiepolitik` | Cookie-information |
+| Privatlivspolitik | `/privatlivspolitik` | Privatlivsbetingelser |
+| Forretningsmodel | `/forretningsmodel` | Beskrivelse af forretningsmodellen |
+| Afbestilling | `/afmeld` | Formular til at afmelde/abonnement |
 
-This project was built with [Lovable](https://lovable.dev).
+### Lead-formularen
 
-**Live app**: https://el-tilbudsfinder-nu.lovable.app
+- Trin 1: boligtype, antal personer, årligt forbrug, nuværende selskab, adresse
+- Trin 2: navn, e-mail, telefon
+- Samtykke til brugerbetingelser og datadeling via to checkboxes
+- Validering med Zod
+- Adresse- og elselskabs-autofuldførelse
 
-## Build with Lovable
+### Backend / automatisering
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/582c60b2-161a-46f8-b963-eaaa942a456a).
+- Nye leads gemmes i `public.leads` tabellen
+- `sync-hubspot` opretter eller opdaterer kontakten i HubSpot med properties:
+  - `firstname`, `lastname`, `email`, `phone`, `address`
+  - `boligtype`, `antal_personer`, `forbrug`, `adresse`
+- `send-lead-email` sender en HTML-e-mail med lead-detaljer fra `noreply@net-partner.dk`
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+### Admin-system
 
-## Development
+- Adgang styres via Supabase Auth + `public.user_roles`
+- Kun brugere med `admin`-rollen kan se og redigere leads
+- Opret en admin-bruger i Supabase Auth, og tilføj derefter rollen i `public.user_roles`
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Kom i gang
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+1. Klon repoet og installer afhængigheder:
+
+```bash
+npm install
+```
+
+2. Kopier miljøvariablerne (værdierne findes i Lovable Cloud / din `.env`):
+
+```bash
+# Frontend
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_PUBLISHABLE_KEY=...
+VITE_SUPABASE_PROJECT_ID=...
+
+# Backend (Edge Functions)
+RESEND_API_KEY=...
+HUBSPOT_API_KEY=...
+```
+
+3. Start udviklingsserveren:
+
+```bash
 npm run dev
 ```
+
+4. Byg til produktion:
+
+```bash
+npm run build
+```
+
+## Database-skema
+
+```sql
+CREATE TABLE public.leads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  boligtype TEXT NOT NULL,
+  personer TEXT NOT NULL,
+  forbrug TEXT NOT NULL,
+  nuvaerende_selskab TEXT,
+  adresse TEXT NOT NULL,
+  navn TEXT NOT NULL,
+  email TEXT NOT NULL,
+  telefon TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'ny',
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+## Deployment
+
+Projektet deployes automatisk via Lovable. Når du publicerer, bygges og hostes frontend, mens backend-funktioner deployes til Lovable Cloud.
+
+Efter ændringer i Edge Functions skal du huske at deploye dem igen fra Lovable.
+
+## Integrationer
+
+- **HubSpot:** Kræver en Private App med `crm.objects.contacts.read` og `crm.objects.contacts.write` scopes.
+- **Resend:** Kræver et verificeret afsender-domæne (`net-partner.dk`).
+
+## Udviklet med
+
+Bygget i [Lovable](https://lovable.dev) med React, TypeScript og Tailwind CSS.
